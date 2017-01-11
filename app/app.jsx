@@ -1,10 +1,12 @@
 //Every react Component needs a render method
-var React = require('react')
-var ReactDOM = require('react-dom')
-var Main = require('Main')
+const React = require('react')
+const ReactDOM = require('react-dom')
+const Main = require('Main')
+const Timer = require('Timer')
+const Countdown = require('Countdown')
 
 //Below is es6 object destructuring
-var {Route, Router, IndexRoute, hashHistory} = require('react-router')
+const {Route, Router, IndexRoute, hashHistory} = require('react-router')
 
 //Load foundation
 require('style!css!foundation-sites/dist/foundation.min.css')
@@ -15,7 +17,9 @@ require('style!css!sass!applicationStyles')
   ReactDOM.render(
     <Router history={hashHistory}>
       <Route path='/' component={Main}>
-      
+      <Route path='timer' component={Timer}/>
+      <Route path='countdown' component={Countdown}/>
+      <IndexRoute component={Timer}/>
       </Route>
     </Router>,
     document.getElementById('app')
