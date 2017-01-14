@@ -1,9 +1,10 @@
-var React = require('react')
-var CountdownForm = require('CountdownForm')
-var Clock = require('Clock')
+const React = require('react')
+const CountdownForm = require('CountdownForm')
+const Clock = require('Clock')
+const Controls = require('Controls')
 
 
-var Countdown = React.createClass({
+const Countdown = React.createClass({
   getInitialState: function () {
     return {
       count: 0,
@@ -11,14 +12,20 @@ var Countdown = React.createClass({
     }
   },
   componentDidUpdate: function (prevProps, prevState) {
-    if (this.state.countdownStatus !== prevState.countdownStatus) {
-      switch (this.state.countdownStatus) {
-        case 'started':
-          this.startTimer()
-          break
+      if (this.state.countdownStatus !== prevState.countdownStatus) {
+        switch (this.state.countdownStatus) {
+          case 'started':
+            this.startTimer()
+            break;
+          case 'stopped':
+            this.setState({count: 0})
+          case 'paused':
+            clearInterval(this.timer)
+            this.timer = undefined
+            break;
+        }
       }
-    }
-  },
+    },
   startTimer: function () {
     this.timer = setInterval(() => {
       const newCount = this.state.count -1
@@ -33,12 +40,22 @@ var Countdown = React.createClass({
       countdownStatus: 'started'
     })
   },
+  handleStatusChange: function (newStatus) {
+    this.setState({countdownStatus: newStatus})
+  },
   render: function () {
-    var {count} = this.state
+    const {count, countdownStatus} = this.state;
+    const renderControlArea = () => {
+      if (countdownStatus !== 'stopped') {
+        return <Controls countdownStatus={countdownStatus} onStatusChange={this.handleStatusChange}/>;
+      } else {
+        return <CountdownForm onSetCountdown={this.handleSetCountdown}/>;
+      }
+    }
     return (
       <div>
         <Clock totalSeconds={count}/>
-        <CountdownForm onSetCountdown={this.handleSetCountdown}/>
+        {renderControlArea()}
       </div>
     )
   }
