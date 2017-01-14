@@ -1,4 +1,3 @@
-
 var webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
@@ -6,7 +5,11 @@ module.exports = function (config) {
     browsers: ['Chrome'],
     singleRun: true,
     frameworks: ['mocha'],
-    files: ['app/tests/**/*.test.jsx'],
+    files: [
+      'app/tests/**/*.test.jsx',
+      'node_modules/jquery/dist/jquery.min.js',
+      'node_modules/foundation-sites/dist/foundation.min.js'
+    ],
     preprocessors: {
       'app/tests/**/*.test.jsx': ['webpack', 'sourcemap']
     },
